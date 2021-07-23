@@ -1,32 +1,33 @@
-import { useState, useEffect } from "react";
-import { Fx } from "../models/currency.model";
+import { useEffect, useState } from 'react';
+import { Fx } from '../models/currency.model';
+import { StatusEnum } from '../models/status.enum';
 
 const baseURL = 'https://run.mocky.io/v3/c88db14a-3128-4fbd-af74-1371c5bb0343';
 
 export default function useCurrencyList() {
-  const [currencyList, setCurrencyList] = useState([]);
-  const [status, setStatus] = useState('unloaded');
+  const [currencyList, setCurrencyList] = useState<Fx[]>([]);
+  const [status, setStatus] = useState(StatusEnum.Unloaded);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     async function getCurrencyList() {
       try {
-        setStatus('loading');
+        setStatus(StatusEnum.Loading);
         const response = await fetch(baseURL);
         const data = await response.json();
         // filter items without currency & exchangeRate
-        const filteredCunrrecyList = data.fx.filter((item : Fx) => item.currency.trim() && item.exchangeRate.buy)
-        setCurrencyList(filteredCunrrecyList);
+        const filteredCurrencyList: Fx[] = data.fx.filter((item: Fx) => item.currency.trim() && item?.exchangeRate?.buy);
+        setCurrencyList(filteredCurrencyList);
         setError(null);
-      } catch(error) {
+      } catch (error) {
         setError(error);
       } finally {
-        setStatus('loaded');
+        setStatus(StatusEnum.Loaded);
       }
     }
 
     getCurrencyList();
   }, []);
 
-  return { currencyList, status, error }
+  return { currencyList, status, error };
 }
