@@ -1,0 +1,9 @@
+.list-item {
+    border: 1px solid black;
+    padding: 5px;
+    margin: 10px 0;
+}
+
+.item {
+    display: flex;
+}
