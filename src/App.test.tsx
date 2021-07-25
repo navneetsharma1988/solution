@@ -5,13 +5,20 @@ import * as useCurrencyList from './hooks/useCurrencyList';
 import { StatusEnum } from './models/status.enum';
 import { Fx } from './models/currency.model';
 
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'mock-resultComponent': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+    }
+  }
+}
+
 jest.mock('./hooks/useCurrencyList');
 const mockedUseCurrencyList = useCurrencyList as jest.Mocked<typeof useCurrencyList>;
 
 const mockResultComponent = jest.fn();
 jest.mock('./components/Result/Result', () => (props: { items: Fx[] }) => {
   mockResultComponent(props);
-  // @ts-ignore
   return <mock-resultComponent />;
 });
 
