@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import App from './App';
 import * as useCurrencyList from './hooks/useCurrencyList';
+import App from './App';
 import { StatusEnum } from './models/status.enum';
 import { Fx } from './models/currency.model';
 
@@ -28,6 +28,7 @@ describe('App component', () => {
   });
 
   test('renders with loading text', () => {
+    // Arrange
     mockedUseCurrencyList.useCurrencyList.mockImplementation(() => {
       return {
         status: StatusEnum.Loading,
@@ -38,11 +39,13 @@ describe('App component', () => {
 
     render(<App />);
 
+    // Assert
     const loadingElement = screen.getByText('loading', { exact: false });
     expect(loadingElement).toBeInTheDocument();
   });
 
   test('renders with error', () => {
+    // Arrange
     mockedUseCurrencyList.useCurrencyList.mockImplementation(() => {
       return {
         status: StatusEnum.Loading,
@@ -53,11 +56,13 @@ describe('App component', () => {
 
     render(<App />);
 
+    // Assert
     const errorElement = screen.getByText('mocked error');
     expect(errorElement).toBeInTheDocument();
   });
 
   test('renders with Result component', () => {
+    // Arrange
     mockedUseCurrencyList.useCurrencyList.mockImplementation(() => {
       return {
         status: StatusEnum.Loaded,
@@ -68,6 +73,7 @@ describe('App component', () => {
 
     render(<App />);
 
+    // Assert
     expect(mockResultComponent).toHaveBeenCalledWith(
       expect.objectContaining({
         items: expect.arrayContaining([expect.objectContaining({ currency: 'USD' })])

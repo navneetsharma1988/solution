@@ -23,11 +23,3 @@ export interface Fx {
   flags: string[];
   denominations: number[];
 }
-
-export interface DataSource {
-  institute: number;
-  lastUpdated: Date;
-  comparisonDate: Date;
-  baseCurrency: string;
-  fx: Fx[];
-}

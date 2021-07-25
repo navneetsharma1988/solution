@@ -1,5 +1,7 @@
+import React from 'react';
 import { Fx } from '../../models/currency.model';
 import classes from './CurrencyItem.module.css';
+
 
 const CurrencyItem: React.FC<{ item: Fx }> = ({ item }) => {
   const itemImage = `images/flags/${item?.currency.slice(0, 2).toLowerCase()}.png`;

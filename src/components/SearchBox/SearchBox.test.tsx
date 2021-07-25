@@ -28,9 +28,6 @@ describe('SearchBox component', () => {
   test('handle onChange', () => {
     // Arrange
     const { inputElement } = setup();
-    const mockInputElement = {
-      value: 'USD'
-    } as HTMLInputElement;
 
     // Act
     userEvent.type(inputElement, 'USD');

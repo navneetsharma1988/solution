@@ -1,6 +1,8 @@
+import React from 'react';
 import classes from './Result.module.css';
 import CurrencyItem from '../CurrencyItem/CurrencyItem';
 import { Fx } from '../../models/currency.model';
+
 
 const Result: React.FC<{ items: Fx[] }> = ({ items }) => {
   let result;

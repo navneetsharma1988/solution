@@ -1,7 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks';
+import fetchMock from 'jest-fetch-mock';
 import { Fx } from '../models/currency.model';
 import { useCurrencyList } from './useCurrencyList';
-import fetchMock from 'jest-fetch-mock';
+
 
 describe('useCurrencyList hook', () => {
   beforeEach(() => {
@@ -9,6 +10,7 @@ describe('useCurrencyList hook', () => {
   });
 
   test('returns currency list', async () => {
+    // Arrange
     const mockAPIResponse = {
       fx: [
         {
@@ -23,8 +25,10 @@ describe('useCurrencyList hook', () => {
 
     expect(result.current.status).toBe('loading');
 
+    // Act
     await waitForNextUpdate();
 
+    // Assert
     const { currencyList, status } = result.current;
 
     expect(status).toBe('loaded');
@@ -32,12 +36,15 @@ describe('useCurrencyList hook', () => {
   });
 
   test('returns error', async () => {
+    // Arrange
     const mockError = 'API is down';
     fetchMock.mockRejectOnce(() => Promise.reject(new Error(mockError)));
     const { result, waitForNextUpdate } = renderHook(() => useCurrencyList());
 
+    // Act
     await waitForNextUpdate();
 
+    // Assert
     const { status, error } = result.current;
 
     expect(status).toBe('loaded');

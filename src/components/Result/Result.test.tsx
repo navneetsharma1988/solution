@@ -1,7 +1,8 @@
-import Result from './Result';
-import { render, screen } from '@testing-library/react';
-import { Fx } from '../../models/currency.model';
 import React from 'react';
+import { render, screen } from '@testing-library/react';
+import Result from './Result';
+import { Fx } from '../../models/currency.model';
+
 
 declare global {
   namespace JSX {
