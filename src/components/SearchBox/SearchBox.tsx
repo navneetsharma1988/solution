@@ -1,6 +1,6 @@
 import classes from './SearchBox.module.css';
 
-const SearchBox: React.FC<{ searchInput: string; updateSearchInput: React.ChangeEventHandler<HTMLInputElement> }> = ({
+const SearchBox: React.FC<{ searchInput: string; updateSearchInput: React.ChangeEventHandler<HTMLInputElement> | undefined}> = ({
   searchInput,
   updateSearchInput
 }) => {
