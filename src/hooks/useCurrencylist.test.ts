@@ -1,12 +1,12 @@
-import { renderHook } from '@testing-library/react-hooks'
-import { Fx } from '../models/currency.model'
-import useCurrencyList from './useCurrencyList'
-import fetchMock from 'jest-fetch-mock'
+import { renderHook } from '@testing-library/react-hooks';
+import { Fx } from '../models/currency.model';
+import { useCurrencyList } from './useCurrencyList';
+import fetchMock from 'jest-fetch-mock';
 
 describe('useCurrencyList hook', () => {
   beforeEach(() => {
-    fetchMock.resetMocks()
-  })
+    fetchMock.resetMocks();
+  });
 
   test('returns currency list', async () => {
     const mockAPIResponse = {
@@ -16,31 +16,31 @@ describe('useCurrencyList hook', () => {
           exchangeRate: { buy: 78 }
         }
       ] as Fx[]
-    }
+    };
 
-    fetchMock.mockResponse(JSON.stringify(mockAPIResponse))
-    const { result, waitForNextUpdate } = renderHook(() => useCurrencyList())
+    fetchMock.mockResponse(JSON.stringify(mockAPIResponse));
+    const { result, waitForNextUpdate } = renderHook(() => useCurrencyList());
 
-    expect(result.current.status).toBe('loading')
+    expect(result.current.status).toBe('loading');
 
-    await waitForNextUpdate()
+    await waitForNextUpdate();
 
-    const { currencyList, status } = result.current
+    const { currencyList, status } = result.current;
 
-    expect(status).toBe('loaded')
-    expect(currencyList).toEqual(mockAPIResponse.fx)
-  })
+    expect(status).toBe('loaded');
+    expect(currencyList).toEqual(mockAPIResponse.fx);
+  });
 
   test('returns error', async () => {
-    const mockError = new Error('API is down');
-    fetchMock.mockRejectOnce(() => Promise.reject(mockError))
-    const { result, waitForNextUpdate } = renderHook(() => useCurrencyList())
+    const mockError = 'API is down';
+    fetchMock.mockRejectOnce(() => Promise.reject(new Error(mockError)));
+    const { result, waitForNextUpdate } = renderHook(() => useCurrencyList());
 
-    await waitForNextUpdate()
+    await waitForNextUpdate();
 
-    const { status, error } = result.current
+    const { status, error } = result.current;
 
-    expect(status).toBe('loaded')
-    expect(error).toEqual(mockError)
-  })
-})
+    expect(status).toBe('loaded');
+    expect(error).toEqual(mockError);
+  });
+});

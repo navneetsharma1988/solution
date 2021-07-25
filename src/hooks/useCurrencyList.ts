@@ -4,10 +4,10 @@ import { StatusEnum } from '../models/status.enum';
 
 const baseURL = 'https://run.mocky.io/v3/c88db14a-3128-4fbd-af74-1371c5bb0343';
 
-export default function useCurrencyList() {
+export const useCurrencyList = () => {
   const [currencyList, setCurrencyList] = useState<Fx[]>([]);
-  const [status, setStatus] = useState(StatusEnum.Unloaded);
-  const [error, setError] = useState(null);
+  const [status, setStatus] = useState<StatusEnum>(StatusEnum.Unloaded);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function getCurrencyList() {
@@ -16,11 +16,13 @@ export default function useCurrencyList() {
         const response = await fetch(baseURL);
         const data = await response.json();
         // filter items without currency & exchangeRate
-        const filteredCurrencyList: Fx[] = data.fx.filter((item: Fx) => item.currency.trim() && item?.exchangeRate?.buy);
+        const filteredCurrencyList: Fx[] = data.fx.filter(
+          (item: Fx) => item.currency.trim() && item?.exchangeRate?.buy
+        );
         setCurrencyList(filteredCurrencyList);
         setError(null);
       } catch (error) {
-        setError(error);
+        setError(error.message);
       } finally {
         setStatus(StatusEnum.Loaded);
       }
@@ -30,4 +32,4 @@ export default function useCurrencyList() {
   }, []);
 
   return { currencyList, status, error };
-}
+};
