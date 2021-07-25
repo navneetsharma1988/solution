@@ -1,5 +1,21 @@
 import Result from './Result';
 import { render, screen } from '@testing-library/react';
+import { Fx } from '../../models/currency.model';
+import React from 'react';
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'mock-currencyItemComponent': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement>;
+    }
+  }
+}
+
+const mockCurrencyItemComponent = jest.fn();
+jest.mock('../CurrencyItem/CurrencyItem', () => (props: { item: Fx }) => {
+  mockCurrencyItemComponent(props);
+  return <mock-currencyItemComponent />;
+});
 
 describe('Result component', () => {
   test('renders no item', () => {
@@ -12,5 +28,22 @@ describe('Result component', () => {
 
     expect(headingElement).toBeInTheDocument();
     expect(listElement).toBeNull();
+  });
+
+  test('renders CurrencyItem component with item', () => {
+    // Arrange
+    render(<Result items={[{ currency: 'USD' } as Fx]} />);
+
+    // Assert
+    const listElement = screen.queryByRole('list');
+
+    expect(listElement).toBeInTheDocument();
+    expect(mockCurrencyItemComponent).toHaveBeenCalledWith(
+      expect.objectContaining({
+        item: expect.objectContaining({
+          currency: 'USD'
+        })
+      })
+    );
   });
 });
